@@ -12,6 +12,10 @@ add_executable(checkmate
     src/main.cpp
     src/mainwindow.cpp
     src/mainwindow.h
+    src/engine.h
+    src/engine.cpp
+    src/boardposition.h
+    src/boardposition.cpp
 )
 
 target_link_libraries(checkmate PRIVATE Qt6::Widgets)
