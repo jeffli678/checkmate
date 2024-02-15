@@ -4,6 +4,7 @@
 #include <string>
 #include <filesystem>
 #include <QObject>
+#include <QProcess>
 #include "ucicommon.h"
 using namespace std;
 
@@ -12,7 +13,20 @@ class Engine: public QObject
     Q_OBJECT
 
 private:
+    enum EngineStatus
+    {
+        Inactive,
+        Starting,
+        Started,
+        Ready,
+        Thinking,
+        Idle,
+        Error
+    };
+
     QString m_enginePath;
+    QProcess* m_process;
+    EngineStatus m_engineStatus = Inactive;
 
 public:
     Engine(const QString& path);
@@ -24,7 +38,10 @@ public:
     void Quit();
     void SetFen(const QString& fen);
     void Go();
+    void Kill();
+
+    void onReadReady();
 
 signals:
-    void onAnalysisUpdate();
+    void onNewInfo();
 };

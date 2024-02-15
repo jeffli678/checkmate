@@ -1,14 +1,22 @@
 #pragma once
 
+#include <cstdio>
+#include <cinttypes>
+
+constexpr size_t XIANGQI_BOARD_ROWS = 10;
+constexpr size_t XIANGQI_BOARD_COLUMNS = 9;
+
 enum Side
 {
-    RedSide,
-    BlackSide
+    Invalid,
+    Red,
+    Black
 };
 
 
 enum PieceType
 {
+    InvalidPiece,
     King,
     Advisor,
     Bishop,
@@ -23,6 +31,8 @@ struct Piece
 {
     PieceType type;
     Side side;
+    Piece(): type(InvalidPiece), side(Invalid) {}
+    Piece(PieceType t, Side s): type(t), side(s) {}
 };
 
 
@@ -37,18 +47,4 @@ struct Move
 {
     Piece piece;
     PiecePosition start, end;
-};
-
-
-struct BoardPosition
-{
-    QList<PiecePosition> pieces;
-    Side movingSide;
-
-    static BoardPosition FromFen(const QString& fen);
-    static QString ToFen(const BoardPosition& position);
-
-    void SetFen(const QString& fen);
-
-    Side getMovingSide() const;
 };
