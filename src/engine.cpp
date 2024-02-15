@@ -19,15 +19,15 @@ bool Engine::Init()
     m_engineStatus = Starting;
     m_process->start(m_enginePath);
 
-    Write("uci\n");
+    Write("uci");
     return true;
 }
 
 
 void Engine::Write(const QString &content)
 {
-    printf("user: %s", content.toStdString().c_str());
-    m_process->write(content.toStdString().c_str());
+    printf("user: %s\n", content.toStdString().c_str());
+    m_process->write((content +'\n').toStdString().c_str());
 }
 
 
@@ -56,17 +56,17 @@ void Engine::onReadReady()
 
 void Engine::SetFen(const QString &fen)
 {
-    Write(QString("position fen " + fen + "\n").toStdString().c_str());
+    Write(QString("position fen " + fen).toStdString().c_str());
 }
 
 
 void Engine::Go()
 {
-    Write("go ponder\n");
+    Write("go ponder");
 }
 
 
 void Engine::Stop()
 {
-    Write("stop\n");
+    Write("stop");
 }
