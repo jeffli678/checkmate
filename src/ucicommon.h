@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cinttypes>
 #include <vector>
+#include <string>
 
 constexpr size_t XIANGQI_BOARD_ROWS = 10;
 constexpr size_t XIANGQI_BOARD_COLUMNS = 9;
@@ -17,14 +18,14 @@ enum Side
 
 enum PieceType
 {
-    InvalidPiece,
+    Empty,
     King,
     Advisor,
     Bishop,
     Knight,
     Rook,
     Pawn,
-    Canon
+    Canon,
 };
 
 
@@ -32,7 +33,7 @@ struct Piece
 {
     PieceType type;
     Side side;
-    Piece(): type(InvalidPiece), side(Invalid) {}
+    Piece(): type(Empty), side(Invalid) {}
     Piece(PieceType t, Side s): type(t), side(s) {}
 };
 

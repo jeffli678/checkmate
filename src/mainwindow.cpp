@@ -61,6 +61,14 @@ void MainWindow::InitEngine()
 
 void MainWindow::StartAnalysis()
 {
+    if (!m_position.SetFen(m_fenInput->toPlainText()))
+    {
+        printf("Invalid fen");
+        return;
+    }
+
+    printf("%s\n", m_position.dump().c_str());
+
     m_engine->SetFen(m_fenInput->toPlainText());
     m_engine->Go();
 }
