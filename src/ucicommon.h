@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <cinttypes>
+#include <vector>
 
 constexpr size_t XIANGQI_BOARD_ROWS = 10;
 constexpr size_t XIANGQI_BOARD_COLUMNS = 9;
@@ -45,6 +46,11 @@ struct PiecePosition
 
 struct Move
 {
-    Piece piece;
     PiecePosition start, end;
+};
+
+
+struct MoveList
+{
+    std::vector<Move> moves;
 };

@@ -8,6 +8,35 @@
 #include "ucicommon.h"
 using namespace std;
 
+enum PonderInfoType
+{
+    Info_Depth,
+    Info_Seldeptch,
+    Info_Multipv,
+    Info_Score,
+    Info_Nodes,
+    Info_Nps,
+    Info_Hashfull,
+    Info_Tbhits,
+    Info_Time,
+    Info_Pv,
+    Info_Invalid
+};
+
+struct PonderInfo
+{
+    uint64_t depth;
+    uint64_t seldepth;
+    uint64_t multipv;
+    uint64_t score;
+    uint64_t nodes;
+    uint64_t nps;
+    uint64_t hashfull;
+    uint64_t tbhits;
+    uint64_t time;
+    MoveList pv;
+};
+
 class Engine: public QObject
 {
     Q_OBJECT
@@ -41,8 +70,10 @@ public:
     void Go();
     void Kill();
 
+    void parseInfo(const QString& line);
+    MoveList parseMoveList(const QString& line, size_t& bytesConsumed);
     void onReadReady();
 
 signals:
-    void onNewInfo();
+    void newPonderInfo(const PonderInfo& info);
 };

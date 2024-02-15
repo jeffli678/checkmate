@@ -18,9 +18,9 @@ private:
 
     void StartAnalysis();
     void StopAnalysis();
+    void onNewPonderInfo(const PonderInfo& info);
 
 public:
     explicit MainWindow();
     ~MainWindow();
-
 };

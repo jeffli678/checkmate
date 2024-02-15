@@ -54,9 +54,8 @@ void MainWindow::InitEngine()
         printf("failed to init engine\n");
         return;
     }
-//    m_engine->SetFen(DEFAULT_FEN);
-//    m_engine->Go();
-//    connect(m_engine, &Engine::onNewInfo, this)
+
+    connect(m_engine, &Engine::newPonderInfo, this, &MainWindow::onNewPonderInfo);
 }
 
 
@@ -70,6 +69,12 @@ void MainWindow::StartAnalysis()
 void MainWindow::StopAnalysis()
 {
     m_engine->Stop();
+}
+
+
+void MainWindow::onNewPonderInfo(const PonderInfo &info)
+{
+    printf("depth: %llu\n", info.depth);
 }
 
 
