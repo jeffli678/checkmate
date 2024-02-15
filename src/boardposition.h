@@ -22,6 +22,7 @@ struct BoardPosition
 
     Side GetMovingSide() const { return movingSide; }
     std::string DumpBoard() const;
-    std::vector<std::string> RenderMoveList(const MoveList& moveList) const;
+    std::vector<std::string> RenderMoveList(const MoveList& moveList);
     std::string RenderMove(const Move& move) const;
+    void CommitMove(const Move& move);
 };

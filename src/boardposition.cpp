@@ -183,15 +183,36 @@ std::string BoardPosition::DumpBoard() const
 }
 
 
-std::vector<std::string> BoardPosition::RenderMoveList(const MoveList &moveList) const
+std::vector<std::string> BoardPosition::RenderMoveList(const MoveList &moveList)
 {
     std::vector<std::string> result;
     result.reserve(moveList.moves.size());
+
+    Piece pieces_copy[XIANGQI_BOARD_ROWS][XIANGQI_BOARD_COLUMNS];
+    for (auto i = 0; i < XIANGQI_BOARD_ROWS; i++)
+        for (auto j = 0; j < XIANGQI_BOARD_COLUMNS; j++)
+            pieces_copy[i][j] = pieces[i][j];
+
     for (const auto& move: moveList.moves)
     {
         result.push_back(RenderMove(move));
+        CommitMove(move);
     }
+
+    for (auto i = 0; i < XIANGQI_BOARD_ROWS; i++)
+        for (auto j = 0; j < XIANGQI_BOARD_COLUMNS; j++)
+            pieces[i][j] = pieces_copy[i][j];
+
     return result;
+}
+
+
+void BoardPosition::CommitMove(const Move &move)
+{
+    auto start = move.start;
+    auto end = move.end;
+    pieces[end.row][end.column] = pieces[start.row][start.column];
+    pieces[start.row][start.column] = {Empty, Invalid};
 }
 
 

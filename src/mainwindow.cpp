@@ -82,13 +82,14 @@ void MainWindow::StopAnalysis()
 
 void MainWindow::onNewPonderInfo(const PonderInfo &info)
 {
-//    printf("depth: %llu\n", info.depth);
     auto moves = m_position.RenderMoveList(info.pv);
+    std::string moveAll;
     for (const auto& move: moves)
     {
-        printf("%s ", move.c_str());
+        moveAll += (move + ' ');
     }
-    printf("\n");
+    printf("%s\n", moveAll.c_str());
+    m_movesInfo->append(QString::fromStdString(moveAll) + '\n');
 }
 
 
