@@ -19,67 +19,15 @@ bool Engine::Init()
     m_engineStatus = Starting;
     m_process->start(m_enginePath);
 
-//    if (!m_process->waitForStarted())
-//    {
-//        auto error = m_process->error();
-//        printf("failed to start: %d\n", error);
-//        return false;
-//    }
-
-    // THis needs better portability
-//    if (!m_process->waitForReadyRead())
-//    {
-//        auto error = m_process->error();
-//        printf("failed to wait for read: %d\n", error);
-//        return false;
-//    }
-//    auto array = m_process->readLine();
-
-//    size_t attempts = 0;
-//    while (attempts < 100)
-//    {
-//        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-//        if (m_engineStatus == Error)
-//            return false;
-//        else if (m_engineStatus == Started)
-//            m_process->write("uci\n");
-//        attempts++;
-//    }
-    m_process->write("uci\n");
-
-//    auto attempts = 0;
-//    while (attempts < 100)
-//    {
-//        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-//        if (m_engineStatus == Error)
-//            return false;
-//        else if (m_engineStatus == Ready)
-//            return true;
-//        attempts++;
-//    }
-//    return false;
-
-//    if (!m_process->waitForBytesWritten())
-//    {
-//        auto error = m_process->error();
-//        printf("failed to write: %d\n", error);
-//        return false;
-//    }
-
-//    if (!m_process->waitForReadyRead())
-//    {
-//        auto error = m_process->error();
-//        printf("failed to wait for read: %d\n", error);
-//        return false;
-//    }
-//
-//    while (true)
-//    {
-//        auto array = m_process->readLine();
-//        if (array.startsWith("uciok"))
-//            break;
-//    }
+    Write("uci\n");
     return true;
+}
+
+
+void Engine::Write(const QString &content)
+{
+    printf("user: %s", content.toStdString().c_str());
+    m_process->write(content.toStdString().c_str());
 }
 
 
@@ -92,13 +40,14 @@ void Engine::onReadReady()
             line.chop(1);
         if (line.isEmpty())
             continue;
-        printf("%s\n", line.toStdString().c_str());
+        printf("engine: %s\n", line.toStdString().c_str());
         if (line == "uciok")
         {
             m_engineStatus = Ready;
         }
         else if (line.startsWith("info"))
         {
+            // info depth 19 seldepth 27 multipv 1 score cp 31753 nodes 4051383 nps 1131671 hashfull 970 tbhits 0 time 3580 pv b2b9 h9g7 b0c2 b7b5 e0e1 b5c5 a0a2 g7e8 b9b0 c5i5 h2i2 e6e5 c3c4 e5e4 i2i5 i6i5 g0e2
 
         }
 
@@ -107,27 +56,17 @@ void Engine::onReadReady()
 
 void Engine::SetFen(const QString &fen)
 {
-    m_process->write(QString("position fen " + fen + "\n").toStdString().c_str());
-//    if (!m_process->waitForBytesWritten())
-//    {
-//        auto error = m_process->error();
-//        printf("failed to write: %d\n", error);
-//    }
+    Write(QString("position fen " + fen + "\n").toStdString().c_str());
 }
 
 
 void Engine::Go()
 {
-    m_process->write("go ponder\n");
-//    if (!m_process->waitForBytesWritten())
-//    {
-//        auto error = m_process->error();
-//        printf("failed to write: %d\n", error);
-//    }
+    Write("go ponder\n");
 }
 
 
 void Engine::Stop()
 {
-    m_process->write("stop\n");
+    Write("stop\n");
 }

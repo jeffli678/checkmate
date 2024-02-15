@@ -32,6 +32,7 @@ public:
     Engine(const QString& path);
     void SetEnginePath(const QString& path);
     bool Init();
+    void Write(const QString& content);
     bool SetUCIOption(const QString& name, const QString& value);
     bool SetUCIOption(const QString& name, uint64_t value);
     void Stop();
