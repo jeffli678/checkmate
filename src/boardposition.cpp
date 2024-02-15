@@ -156,7 +156,7 @@ bool BoardPosition::SetFen(const QString &fen)
 }
 
 
-std::string BoardPosition::dump() const
+std::string BoardPosition::DumpBoard() const
 {
     std::string result;
     for (auto i = 0; i < XIANGQI_BOARD_ROWS; i++)
@@ -179,5 +179,122 @@ std::string BoardPosition::dump() const
         }
         result += '\n';
     }
+    return result;
+}
+
+
+std::vector<std::string> BoardPosition::RenderMoveList(const MoveList &moveList) const
+{
+    std::vector<std::string> result;
+    result.reserve(moveList.moves.size());
+    for (const auto& move: moveList.moves)
+    {
+        result.push_back(RenderMove(move));
+    }
+    return result;
+}
+
+
+std::string BoardPosition::RenderMove(const Move &move) const
+{
+    std::string result;
+
+    auto start = move.start;
+    auto end = move.end;
+
+    auto piece = pieces[start.row][start.column];
+    if (piece.side == Red)
+    {
+        result += redPiecesChs[piece.type];
+    }
+    else if (piece.side == Black)
+    {
+        result += blackPiecesChs[piece.type];
+    }
+    else
+    {
+        result += '?';
+    }
+
+    if (piece.side == Red)
+    {
+        result += redIntegerName[XIANGQI_BOARD_COLUMNS - 1 - start.column];
+    }
+    else if (piece.side == Black)
+    {
+        result += blackIntegerName[start.column];
+    }
+    else
+    {
+        result += std::to_string(start.column);
+    }
+
+    if (start.row == end.row)
+    {
+        result += "平";
+    }
+    else if (piece.side == Red)
+    {
+        result += ((start.row < end.row) ? "退" : "进");
+    }
+    else if (piece.side == Black)
+    {
+        result += ((start.row > end.row) ? "退" : "进");
+    }
+    else
+    {
+        result += "?";
+    }
+
+    if (start.row == end.row)
+    {
+        if (piece.side == Red)
+        {
+            result += redIntegerName[XIANGQI_BOARD_COLUMNS - 1 - end.column];
+        }
+        else if (piece.side == Black)
+        {
+            result += blackIntegerName[end.column];
+        }
+        else
+        {
+            result += "?";
+        }
+    }
+    else
+    {
+        if (start.column == end.column)
+        {
+            auto diff = std::abs(start.row - end.row);
+            if (piece.side == Red)
+            {
+                result += redIntegerName[diff - 1];
+            }
+            else if (piece.side == Black)
+            {
+                result += blackIntegerName[diff - 1];
+            }
+            else
+            {
+                result += "?";
+            }
+        }
+        else
+        {
+            if (piece.side == Red)
+            {
+                result += redIntegerName[XIANGQI_BOARD_COLUMNS - 1 - end.column];
+            }
+            else if (piece.side == Black)
+            {
+                result += blackIntegerName[end.column];
+            }
+            else
+            {
+                result += "?";
+            }
+        }
+    }
+
     return result;
 }

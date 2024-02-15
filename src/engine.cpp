@@ -60,7 +60,8 @@ MoveList Engine::parseMoveList(const QString &line, size_t &bytesConsumed)
 
     while (!lineToParse.isEmpty())
     {
-        auto move = lineToParse.remove(0, 4);
+        auto move = lineToParse.left(4);
+        lineToParse.remove(0, 4);
         if (move.size() != 4)
             return result;
 
@@ -91,7 +92,7 @@ MoveList Engine::parseMoveList(const QString &line, size_t &bytesConsumed)
 
         if (!((value >= 0) && (value <= 9)))
             return result;
-        start.row = 9 - value;
+        end.row = 9 - value;
 
         result.moves.push_back({start, end});
         lineToParse.remove(0, 1);

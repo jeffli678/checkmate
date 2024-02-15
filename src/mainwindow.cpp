@@ -67,7 +67,7 @@ void MainWindow::StartAnalysis()
         return;
     }
 
-    printf("%s\n", m_position.dump().c_str());
+    printf("%s\n", m_position.DumpBoard().c_str());
 
     m_engine->SetFen(m_fenInput->toPlainText());
     m_engine->Go();
@@ -82,7 +82,13 @@ void MainWindow::StopAnalysis()
 
 void MainWindow::onNewPonderInfo(const PonderInfo &info)
 {
-    printf("depth: %llu\n", info.depth);
+//    printf("depth: %llu\n", info.depth);
+    auto moves = m_position.RenderMoveList(info.pv);
+    for (const auto& move: moves)
+    {
+        printf("%s ", move.c_str());
+    }
+    printf("\n");
 }
 
 
