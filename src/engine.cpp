@@ -117,6 +117,8 @@ void Engine::parseInfo(const QString &line)
         "seldepth",
         "multipv",
         "score cp",
+        "upperbound nodes",
+        "lowerbound nodes",
         "nodes",
         "nps",
         "hashfull",
@@ -176,20 +178,26 @@ void Engine::parseInfo(const QString &line)
         case Info_Score:
             info.score = value;
             break;
+        case Info_Lowerbound_Nodes:
+            info.lowerboundnodes = value;
+            break;
+        case Info_Upperbound_Nodes:
+            info.upperboundnodes = value;
+            break;
         case Info_Nodes:
             info.nodes = value;
             break;
         case Info_Nps:
-            info.multipv = value;
+            info.nps = value;
             break;
         case Info_Hashfull:
-            info.score = value;
+            info.hashfull = value;
             break;
         case Info_Tbhits:
-            info.nodes = value;
+            info.tbhits = value;
             break;
         case Info_Time:
-            info.multipv = value;
+            info.time = value;
             break;
         case Info_Pv:
             info.pv = pv;

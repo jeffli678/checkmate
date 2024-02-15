@@ -14,6 +14,8 @@ enum PonderInfoType
     Info_Seldeptch,
     Info_Multipv,
     Info_Score,
+    Info_Lowerbound_Nodes,
+    Info_Upperbound_Nodes,
     Info_Nodes,
     Info_Nps,
     Info_Hashfull,
@@ -29,6 +31,8 @@ struct PonderInfo
     uint64_t seldepth;
     uint64_t multipv;
     uint64_t score;
+    uint64_t lowerboundnodes;
+    uint64_t upperboundnodes;
     uint64_t nodes;
     uint64_t nps;
     uint64_t hashfull;
