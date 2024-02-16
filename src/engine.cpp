@@ -1,6 +1,7 @@
 #include "engine.h"
 #include <chrono>
 #include <thread>
+#include <filesystem>
 
 
 Engine::Engine(const QString &path): m_enginePath(path)
@@ -17,6 +18,15 @@ bool Engine::Init()
     connect(m_process, &QProcess::errorOccurred, [&](){ m_engineStatus = Error; });
 
     m_engineStatus = Starting;
+    try
+    {
+        auto parent = std::filesystem::path(m_enginePath.toStdString()).parent_path();
+        m_process->setWorkingDirectory(QString::fromStdString(parent.string()));
+    }
+    catch (const exception& e)
+    {
+        printf("failed to set working directory");
+    }
     m_process->start(m_enginePath);
 
     Write("uci");
